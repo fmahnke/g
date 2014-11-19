@@ -1,0 +1,25 @@
+{
+  "name": "g",
+  "version": "0.0.0",
+  "authors": [
+    "Fritz <fritz@fritzmahnke.com>"
+  ],
+  "description": "gMF",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "lib/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "gyro.js": "~1.0.0",
+    "pixi.js": "~2.1.1",
+    "fpsmeter": "~0.3.1"
+  }
+}
