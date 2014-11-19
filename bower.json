@@ -11,13 +11,10 @@
   "license": "MIT",
   "ignore": [
     "**/.*",
-    "node_modules",
-    "bower_components",
-    "lib/",
     "test",
     "tests"
   ],
-  "dependencies": {
+  "devDependencies": {
     "gyro.js": "~1.0.0",
     "pixi.js": "~2.1.1",
     "fpsmeter": "~0.3.1"
