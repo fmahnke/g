@@ -22,10 +22,16 @@ G.updateInput = function () {
     G.input.x = -1;
   } else if (G.keyboard1.isKeyPressed(G.keys.right)) {
     G.input.x = 1;
-  } else if (G.keyboard1.isKeyPressed(G.keys.up)) {
+  } else {
+    G.input.x = 0;
+  }
+
+  if (G.keyboard1.isKeyPressed(G.keys.up)) {
     G.input.y = 1;
   } else if (G.keyboard1.isKeyPressed(G.keys.down)) {
     G.input.y = -1;
+  } else {
+    G.input.y = 0;
   }
 };
 
@@ -78,8 +84,8 @@ G._rescale = function () {
 };
 
 G.createTextures = function () {
-  for (var asset in G.assets) {
-    var texture = PIXI.Texture.fromImage(G.assets[asset]);
+  for (var asset in G.assets.textures) {
+    var texture = PIXI.Texture.fromImage(G.assets.textures[asset]);
 
     G.textures[asset] = texture;
   }
