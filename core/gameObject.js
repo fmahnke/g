@@ -40,6 +40,14 @@ Object.defineProperty(G.GameObject.prototype, 'velocityY', {
   }
 });
 
+G.GameObject.prototype.remove = function () {
+  G.stage.removeChild(this);
+
+  G.objects = G.objects.filter(function (gameObject) {
+    return (gameObject === this);
+  });
+};
+
 G.GameObject.create = function (properties) {
   var texture = G.textures[properties.texture];
   var gameObject = new G.GameObject(texture);
