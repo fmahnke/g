@@ -1,4 +1,4 @@
-G.GameObject = function(texture) {
+g.GameObject = function(texture) {
   PIXI.Sprite.call(this, texture);
 
   this._tag = '';
@@ -10,10 +10,10 @@ G.GameObject = function(texture) {
   this.useGravity = true;
 };
 
-G.GameObject.prototype = Object.create(PIXI.Sprite.prototype);
-G.GameObject.prototype.constructor = G.GameObject;
+g.GameObject.prototype = Object.create(PIXI.Sprite.prototype);
+g.GameObject.prototype.constructor = g.GameObject;
 
-Object.defineProperty(G.GameObject.prototype, 'tag', {
+Object.defineProperty(g.GameObject.prototype, 'tag', {
   get: function () {
     return this._tag;
   },
@@ -22,7 +22,7 @@ Object.defineProperty(G.GameObject.prototype, 'tag', {
   }
 });
 
-Object.defineProperty(G.GameObject.prototype, 'velocityX', {
+Object.defineProperty(g.GameObject.prototype, 'velocityX', {
   get: function () {
     return this._velocityX;
   },
@@ -31,7 +31,7 @@ Object.defineProperty(G.GameObject.prototype, 'velocityX', {
   }
 });
 
-Object.defineProperty(G.GameObject.prototype, 'velocityY', {
+Object.defineProperty(g.GameObject.prototype, 'velocityY', {
   get: function () {
     return this._velocityY;
   },
@@ -40,17 +40,17 @@ Object.defineProperty(G.GameObject.prototype, 'velocityY', {
   }
 });
 
-G.GameObject.prototype.remove = function () {
-  G.stage.removeChild(this);
+g.GameObject.prototype.remove = function () {
+  g.stage.removeChild(this);
 
-  G.objects = G.objects.filter(function (gameObject) {
-    return (gameObject === this);
+  g.objects = g.objects.filter(function (gameObject) {
+    return (gameObject !== this);
   });
 };
 
-G.GameObject.create = function (properties) {
-  var texture = G.textures[properties.texture];
-  var gameObject = new G.GameObject(texture);
+g.GameObject.create = function (properties) {
+  var texture = g.textures[properties.texture];
+  var gameObject = new g.GameObject(texture);
 
   if (properties.position) {
     if (properties.position.x) {
@@ -90,16 +90,16 @@ G.GameObject.create = function (properties) {
       gameObject.tag = properties.tag;
   }
 
-  G.stage.addChild(gameObject);
-  G.objects.push(gameObject);
+  g.stage.addChild(gameObject);
+  g.objects.push(gameObject);
 
   return gameObject;
 };
 
-G.GameObject.deleteAll = function () {
-  G.objects = [];
+g.GameObject.deleteAll = function () {
+  g.objects = [];
 
-  if (G.stage.children.length > 0) {
-    G.stage.removeChildren(0);
+  if (g.stage.children.length > 0) {
+    g.stage.removeChildren(0);
   }
 };

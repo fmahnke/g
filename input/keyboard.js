@@ -1,18 +1,18 @@
-G.Keyboard = function () {
+g.Keyboard = function () {
   this._keyStates = {};
 
   var self = this;
 
-  for (var code in G.Keyboard.prototype.keyCodeEnum) {
-    this._keyStates[code] = G.Keyboard.prototype.keyStateEnum.up;
+  for (var code in g.Keyboard.prototype.keyCodeEnum) {
+    this._keyStates[code] = g.Keyboard.prototype.keyStateEnum.up;
   }
 
   document.addEventListener('keydown', function (event) {
     var code = event.keyCode;
 
-    for (var keyCodeEnum in G.Keyboard.prototype.keyCodeEnum) {
-      if (code === G.Keyboard.prototype.keyCodeEnum[keyCodeEnum]) {
-        self._keyStates[keyCodeEnum] = G.Keyboard.prototype.keyStateEnum.down;
+    for (var keyCodeEnum in g.Keyboard.prototype.keyCodeEnum) {
+      if (code === g.Keyboard.prototype.keyCodeEnum[keyCodeEnum]) {
+        self._keyStates[keyCodeEnum] = g.Keyboard.prototype.keyStateEnum.down;
       }
     }
   });
@@ -20,36 +20,36 @@ G.Keyboard = function () {
   document.addEventListener('keyup', function (event) {
     var code = event.keyCode;
 
-    for (var keyCodeEnum in G.Keyboard.prototype.keyCodeEnum) {
-      if (code === G.Keyboard.prototype.keyCodeEnum[keyCodeEnum]) {
-        self._keyStates[keyCodeEnum] = G.Keyboard.prototype.keyStateEnum.up;
+    for (var keyCodeEnum in g.Keyboard.prototype.keyCodeEnum) {
+      if (code === g.Keyboard.prototype.keyCodeEnum[keyCodeEnum]) {
+        self._keyStates[keyCodeEnum] = g.Keyboard.prototype.keyStateEnum.up;
       }
     }
   });
 };
 
-G.keys = {
+g.keys = {
   left: 'left',
   right: 'right',
   up: 'up',
   down: 'down'
 };
 
-G.Keyboard.prototype.constructor = G.Keyboard;
+g.Keyboard.prototype.constructor = g.Keyboard;
 
-G.Keyboard.prototype.keyCodeEnum = {
+g.Keyboard.prototype.keyCodeEnum = {
   left: 37,
   right: 39,
   up: 38,
   down: 40
 };
 
-G.Keyboard.prototype.keyStateEnum = {
+g.Keyboard.prototype.keyStateEnum = {
   up: 0,
   down: 1
 };
 
-G.Keyboard.prototype.isKeyPressed = function (keyCodeEnum) {
+g.Keyboard.prototype.isKeyPressed = function (keyCodeEnum) {
   if (this._keyStates[keyCodeEnum] === this.keyStateEnum.down) {
     return true;
   } else {

@@ -1,112 +1,112 @@
-G.input = {};
+g.input = {};
 
-G.textures = {};
+g.textures = {};
 
-G.objects = [];
+g.objects = [];
 
-G.fpsMeter = new FPSMeter();
+g.fpsMeter = new FPSMeter();
 
-G.keyboard1 = new G.Keyboard();
+g.keyboard1 = new g.Keyboard();
 
-G.display = {};
+g.display = {};
 
-G.updateGameObjectPositions = function () {
-  G.objects.forEach(function (object) {
+g.updateGameObjectPositions = function () {
+  g.objects.forEach(function (object) {
     object.position.x += object.velocityX;
     object.position.y += object.velocityY;
   });
 };
 
-G.updateInput = function () {
-  if (G.keyboard1.isKeyPressed(G.keys.left)) {
-    G.input.x = -1;
-  } else if (G.keyboard1.isKeyPressed(G.keys.right)) {
-    G.input.x = 1;
+g.updateInput = function () {
+  if (g.keyboard1.isKeyPressed(g.keys.left)) {
+    g.input.x = -1;
+  } else if (g.keyboard1.isKeyPressed(g.keys.right)) {
+    g.input.x = 1;
   } else {
-    G.input.x = 0;
+    g.input.x = 0;
   }
 
-  if (G.keyboard1.isKeyPressed(G.keys.up)) {
-    G.input.y = 1;
-  } else if (G.keyboard1.isKeyPressed(G.keys.down)) {
-    G.input.y = -1;
+  if (g.keyboard1.isKeyPressed(g.keys.up)) {
+    g.input.y = 1;
+  } else if (g.keyboard1.isKeyPressed(g.keys.down)) {
+    g.input.y = -1;
   } else {
-    G.input.y = 0;
+    g.input.y = 0;
   }
 };
 
-G.frame = function () {
+g.frame = function () {
   var time = new Date().getTime();
-  var dt = time - (G.time || time);
+  var dt = time - (g.time || time);
 
-  G.time = time;
-  G.gameTime += dt;
+  g.time = time;
+  g.gameTime += dt;
 
-  G.fpsMeter.tick();
+  g.fpsMeter.tick();
 
-  G.updateInput();
+  g.updateInput();
 
-  G.collisions = G.getCollisions(G.objects);
-  G.updateGameObjectPositions();
+  g.collisions = g.getCollisions(g.objects);
+  g.updateGameObjectPositions();
 };
 
-G.scaleToRatio = function (object, ratio) {
+g.scaleToRatio = function (object, ratio) {
   object.position.x = object.position.x * ratio;
   object.position.y = object.position.y * ratio;
   object.scale.x = object.scale.x * ratio;
   object.scale.y = object.scale.y * ratio;
 };
 
-G._applyRatio = function (object, ratio) {
+g._applyRatio = function (object, ratio) {
   if (ratio == 1) return;
 
-  G.scaleToRatio(object, ratio);
+  g.scaleToRatio(object, ratio);
 
   for (var i = 0; i < object.children.length; i++) {
     var child = object.children[i];
-    G.scaleToRatio(child, ratio);
+    g.scaleToRatio(child, ratio);
   }
 };
 
-G.render = function () {
-  G._applyRatio(G.stage, G.display.ratio); //scale to screen size
-  G.renderer.render(G.stage);
-  G._applyRatio(G.stage, 1 / G.display.ratio);
+g.render = function () {
+  g._applyRatio(g.stage, g.display.ratio); //scale to screen size
+  g.renderer.render(g.stage);
+  g._applyRatio(g.stage, 1 / g.display.ratio);
 };
 
-G._rescale = function () {
-  G.display.ratio = Math.min(window.innerWidth / G.config.width, window.innerHeight /
-      G.config.height);
-  G.display.width = G.config.width * G.display.ratio;
-  G.display.height = G.config.height * G.display.ratio;
+g._rescale = function () {
+  g.display.ratio = Math.min(window.innerWidth / g.config.width, window.innerHeight /
+      g.config.height);
+  g.display.width = g.config.width * g.display.ratio;
+  g.display.height = g.config.height * g.display.ratio;
 
-  G.renderer.resize(G.display.width, G.display.height);
+  g.renderer.resize(g.display.width, g.display.height);
 };
 
-G.createTextures = function () {
-  for (var asset in G.assets.textures) {
-    var texture = PIXI.Texture.fromImage(G.assets.textures[asset]);
+g.createTextures = function () {
+  for (var asset in g.assets.textures) {
+    var texture = PIXI.Texture.fromImage(g.assets.textures[asset]);
 
-    G.textures[asset] = texture;
+    g.textures[asset] = texture;
   }
 };
 
-G.initialize = function () {
-  G.stage = new PIXI.Stage();
-  G.renderer = PIXI.autoDetectRenderer(G.config.width, G.config.height);
+g.initialize = function () {
+  g.stage = new PIXI.Stage();
+  g.renderer = PIXI.autoDetectRenderer(g.config.width, g.config.height);
 
-  window.addEventListener('resize', G._rescale, false);
+  window.addEventListener('resize', g._rescale, false);
 
-  document.body.appendChild(G.renderer.view);
+  document.body.appendChild(g.renderer.view);
 
-  G._rescale();
+  g._rescale();
 
-  if (!G.config.showFPS) {
-    G.fpsMeter.hide();
+  if (!g.config.showFPS) {
+    g.fpsMeter.hide();
   }
 };
 
-G.getCollisions = function (objects) {
+g.getCollisions = function (objects) {
   var collisions = [];
 
   objects.forEach(function (object1) {
