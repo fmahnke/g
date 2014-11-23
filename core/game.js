@@ -6,6 +6,8 @@ g.objects = [];
 
 g.fpsMeter = new FPSMeter();
 
+g.log = new g.Log();
+
 g.keyboard1 = new g.Keyboard();
 
 g.display = {};
