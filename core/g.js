@@ -2,7 +2,7 @@
  * Initialize g.
  */
 
-G = {
+g = {
   config: {
     showFPS: false
   },
