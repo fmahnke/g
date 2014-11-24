@@ -42,6 +42,7 @@ g.keys = {
 
 g.Keyboard.prototype.constructor = g.Keyboard;
 
+// TODO: Add the rest. Consider using fromCharCode() to give the caller the name of the key.
 g.Keyboard.prototype.keyCodeEnum = {
   backspace: 8,
   tab: 9,
