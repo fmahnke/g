@@ -18,6 +18,7 @@
     "gyro.js": "~1.0.0",
     "pixi.js": "~2.1.1",
     "fpsmeter": "~0.3.1",
-    "loglevel": "~1.2.0"
+    "loglevel": "~1.2.0",
+    "eventEmitter": "~4.2.9"
   }
 }

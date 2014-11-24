@@ -8,7 +8,9 @@ g.fpsMeter = new FPSMeter();
 
 g.log = new g.Log();
 
-g.keyboard1 = new g.Keyboard();
+g.keyboardEvent = new g.Event();
+
+g.keyboard1 = new g.Keyboard(g.keyboardEvent);
 
 g.display = {};
 
