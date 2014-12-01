@@ -13,6 +13,10 @@ g.Score.prototype.add = function (addend) {
   this.setText('SCORE:' + ' ' + this._score);
 };
 
+g.Score.prototype.value = function () {
+  return this._score;
+};
+
 g.Score.create = function () {
   var score = new g.Score();
 
