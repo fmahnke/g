@@ -7,6 +7,10 @@ g.Text = function (text, style) {
 g.Text.prototype = Object.create(PIXI.Text.prototype);
 g.Text.prototype.constructor = g.Text;
 
+g.Text.prototype.remove = function () {
+  g.stage.removeChild(this);
+};
+
 g.Text.create = function (properties) {
   var text = new g.Text(properties.text, properties.style);
 
