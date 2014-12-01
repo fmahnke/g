@@ -17,6 +17,10 @@ g.Input = function (position, onchange) {
 
 g.Input.prototype.constructor = g.Input;
 
+g.Input.prototype.remove = function () {
+  this._div.parentNode.removeChild(this._div);
+};
+
 g.Input.create = function (properties) {
   return new g.Input(properties.position, properties.onchange);
 };
