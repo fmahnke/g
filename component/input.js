@@ -21,6 +21,10 @@ g.Input.prototype.value = function () {
   return this._input.value;
 };
 
+g.Input.prototype.focus = function () {
+  this._input.focus();
+};
+
 g.Input.prototype.remove = function () {
   this._div.parentNode.removeChild(this._div);
 };
