@@ -41,10 +41,12 @@ Object.defineProperty(g.GameObject.prototype, 'velocityY', {
 });
 
 g.GameObject.prototype.remove = function () {
-  g.stage.removeChild(this);
+  var self = this;
+
+  g.stage.removeChild(self);
 
   g.objects = g.objects.filter(function (gameObject) {
-    return (gameObject !== this);
+    return (gameObject !== self);
   });
 };
 

@@ -110,6 +110,8 @@ g.initialize = function () {
   }
 };
 
+// This method returns each collision pair TWICE.
+// TODO: Report only one pair per collision.
 g.getCollisions = function (objects) {
   var collisions = [];
 
