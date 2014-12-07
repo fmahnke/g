@@ -50,8 +50,8 @@ g.GameObject.prototype.remove = function () {
   });
 };
 
-g.GameObject.create = function (properties) {
-  var texture = g.textures[properties.texture];
+g.GameObject.create = function (properties, game) {
+  var texture = game.textures[properties.texture];
   var gameObject = new g.GameObject(texture);
 
   if (properties.position) {
@@ -92,8 +92,7 @@ g.GameObject.create = function (properties) {
       gameObject.tag = properties.tag;
   }
 
-  g.stage.addChild(gameObject);
-  g.objects.push(gameObject);
+  game.add(gameObject);
 
   return gameObject;
 };

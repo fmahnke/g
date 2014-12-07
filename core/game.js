@@ -1,27 +1,35 @@
-g.input = {};
+g.Game = function () {
+  this.textures = {};
+  this.objects = [];
 
-g.textures = {};
+  this.input = {};
 
-g.objects = [];
+  this.keyboardEvent = new g.Event();
+  this.keyboard1 = new g.Keyboard(g.keyboardEvent);
 
-g.fpsMeter = new FPSMeter();
+  this.display = {};
 
-g.log = new g.Log();
+  this.time = 0; // time since epoch
+  this.gameTime = 0; // time since game began
 
-g.keyboardEvent = new g.Event();
+  this.config = {
+    showFPS: false
+  };
 
-g.keyboard1 = new g.Keyboard(g.keyboardEvent);
+  this.fpsMeter = new FPSMeter();
+  this.log = new g.Log();
+};
 
-g.display = {};
+g.Game.prototype.constructor = g.Game;
 
-g.updateGameObjectPositions = function () {
+g.Game.prototype.updateGameObjectPositions = function () {
   g.objects.forEach(function (object) {
     object.position.x += object.velocityX;
     object.position.y += object.velocityY;
   });
 };
 
-g.updateInput = function () {
+g.Game.prototype.updateInput = function () {
   if (g.keyboard1.isKeyPressed(g.keys.left)) {
     g.input.x = -1;
   } else if (g.keyboard1.isKeyPressed(g.keys.right)) {
@@ -39,7 +47,7 @@ g.updateInput = function () {
   }
 };
 
-g.frame = function () {
+g.Game.prototype.frame = function () {
   var time = new Date().getTime();
   var dt = time - (g.time || time);
 
@@ -54,65 +62,70 @@ g.frame = function () {
   g.updateGameObjectPositions();
 };
 
-g.scaleToRatio = function (object, ratio) {
+g.Game.prototype.scaleToRatio = function (object, ratio) {
   object.position.x = object.position.x * ratio;
   object.position.y = object.position.y * ratio;
   object.scale.x = object.scale.x * ratio;
   object.scale.y = object.scale.y * ratio;
 };
 
-g._applyRatio = function (object, ratio) {
+g.Game.prototype._applyRatio = function (object, ratio) {
   if (ratio == 1) return;
 
-  g.scaleToRatio(object, ratio);
+  this.scaleToRatio(object, ratio);
 
   for (var i = 0; i < object.children.length; i++) {
     var child = object.children[i];
-    g.scaleToRatio(child, ratio);
+    this.scaleToRatio(child, ratio);
   }
 };
 
-g.render = function () {
-  g._applyRatio(g.stage, g.display.ratio); //scale to screen size
-  g.renderer.render(g.stage);
-  g._applyRatio(g.stage, 1 / g.display.ratio);
+g.Game.prototype.render = function () {
+  this._applyRatio(this.stage, this.display.ratio); //scale to screen size
+  this.renderer.render(this.stage);
+  this._applyRatio(this.stage, 1 / this.display.ratio);
 };
 
-g._rescale = function () {
-  g.display.ratio = Math.min(window.innerWidth / g.config.width, window.innerHeight /
-      g.config.height);
-  g.display.width = g.config.width * g.display.ratio;
-  g.display.height = g.config.height * g.display.ratio;
+g.Game.prototype._rescale = function () {
+  this.display.ratio = Math.min(window.innerWidth / this.config.width, window.innerHeight /
+      this.config.height);
+  this.display.width = this.config.width * this.display.ratio;
+  this.display.height = this.config.height * this.display.ratio;
 
-  g.renderer.resize(g.display.width, g.display.height);
+  this.renderer.resize(this.display.width, this.display.height);
 };
 
-g.createTextures = function () {
-  for (var asset in g.assets.textures) {
-    var texture = PIXI.Texture.fromImage(g.assets.textures[asset]);
+g.Game.prototype.createTextures = function () {
+  for (var asset in this.assets.textures) {
+    var texture = PIXI.Texture.fromImage(this.assets.textures[asset]);
 
-    g.textures[asset] = texture;
+    this.textures[asset] = texture;
   }
 };
 
-g.initialize = function () {
-  g.stage = new PIXI.Stage();
-  g.renderer = PIXI.autoDetectRenderer(g.config.width, g.config.height);
+g.Game.prototype.initialize = function () {
+  this.stage = new PIXI.Stage();
+  this.renderer = PIXI.autoDetectRenderer(this.config.width, this.config.height);
 
-  window.addEventListener('resize', g._rescale, false);
+  window.addEventListener('resize', this._rescale, false);
 
-  document.body.appendChild(g.renderer.view);
+  document.body.appendChild(this.renderer.view);
 
-  g._rescale();
+  this._rescale();
 
-  if (!g.config.showFPS) {
-    g.fpsMeter.hide();
+  if (!this.config.showFPS) {
+    this.fpsMeter.hide();
   }
+};
+
+g.Game.prototype.add = function (gameObject) {
+  this.stage.addChild(gameObject);
+  this.objects.push(gameObject);
 };
 
 // This method returns each collision pair TWICE.
 // TODO: Report only one pair per collision.
-g.getCollisions = function (objects) {
+g.Game.prototype.getCollisions = function (objects) {
   var collisions = [];
 
   objects.forEach(function (object1) {
