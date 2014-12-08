@@ -8,21 +8,35 @@ g.GameObject = function(textures) {
   this.collisionAdjustmentX = 0;
   this.collisionAdjustmentY = 0;
   this.useGravity = true;
+
+  this._animationFrame = 0;
 };
 
 g.GameObject.prototype = Object.create(PIXI.MovieClip.prototype);
 g.GameObject.prototype.constructor = g.GameObject;
 
-g.GameObject.fromFrames = function(frames)
+g.GameObject.fromFrames = function(frames, animations)
 {
     var textures = [];
+    var frameNameToIndex = {};
  
     for (var i = 0; i < frames.length; i++) {
       textures.push(new PIXI.Texture.fromFrame(frames[i]));
+      frameNameToIndex[frames[i]] = i;
     }
  
-    return new g.GameObject(textures);
+    var gameObject = new g.GameObject(textures);
+    gameObject.frameNameToIndex = frameNameToIndex;
+    gameObject._animations = animations;
+
+    return gameObject;
 };
+
+Object.defineProperty(g.GameObject.prototype, 'animation', {
+  set: function (value) {
+    this._animation = this._animations[value];
+  }
+});
 
 Object.defineProperty(g.GameObject.prototype, 'tag', {
   get: function () {
@@ -59,6 +73,26 @@ g.GameObject.prototype.remove = function () {
   g.objects = g.objects.filter(function (gameObject) {
     return (gameObject !== self);
   });
+};
+
+g.GameObject.prototype.updateTransform = function()
+{
+    PIXI.Sprite.prototype.updateTransform.call(this);
+ 
+    if(!this.playing)return;
+
+    var nextAnimationFrame = this._animationFrame + 1;
+    if (nextAnimationFrame >= this._animation.frames.length) {
+      this._animationFrame = 0;
+    } else {
+      this._animationFrame = nextAnimationFrame;
+    }
+
+    console.log('rame', this._animationFrame);
+    this.currentFrame = this.frameNameToIndex[this._animation.frames[this._animationFrame]];
+ 
+    console.log(this.currentFrame);
+    this.setTexture(this.textures[this.currentFrame]);
 };
 
 g.GameObject.create = function (properties, game) {
