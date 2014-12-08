@@ -62,7 +62,14 @@ g.GameObject.prototype.remove = function () {
 };
 
 g.GameObject.create = function (properties, game) {
-  var texture = game.textures[properties.texture];
+  var texture;
+
+  if (Object.prototype.toString.call(properties.texture) === '[object Array]') {
+    texture = properties.texture;
+  } else {
+    texture = [game.textures[properties.texture]];
+  }
+
   var gameObject = new g.GameObject(texture);
 
   if (properties.position) {
