@@ -5,7 +5,7 @@ g.Game = function () {
   this.input = {};
 
   this.keyboardEvent = new g.Event();
-  this.keyboard1 = new g.Keyboard(g.keyboardEvent);
+  this.keyboard1 = new g.Keyboard(this.keyboardEvent);
 
   this.display = {};
 
@@ -23,43 +23,51 @@ g.Game = function () {
 g.Game.prototype.constructor = g.Game;
 
 g.Game.prototype.updateGameObjectPositions = function () {
-  g.objects.forEach(function (object) {
+  this.objects.forEach(function (object) {
     object.position.x += object.velocityX;
     object.position.y += object.velocityY;
   });
 };
 
 g.Game.prototype.updateInput = function () {
-  if (g.keyboard1.isKeyPressed(g.keys.left)) {
-    g.input.x = -1;
-  } else if (g.keyboard1.isKeyPressed(g.keys.right)) {
-    g.input.x = 1;
+  if (this.keyboard1.isKeyPressed(g.keys.left)) {
+    this.input.x = -1;
+  } else if (this.keyboard1.isKeyPressed(g.keys.right)) {
+    this.input.x = 1;
   } else {
-    g.input.x = 0;
+    this.input.x = 0;
   }
 
-  if (g.keyboard1.isKeyPressed(g.keys.up)) {
-    g.input.y = 1;
-  } else if (g.keyboard1.isKeyPressed(g.keys.down)) {
-    g.input.y = -1;
+  if (this.keyboard1.isKeyPressed(g.keys.up)) {
+    this.input.y = 1;
+  } else if (this.keyboard1.isKeyPressed(g.keys.down)) {
+    this.input.y = -1;
   } else {
-    g.input.y = 0;
+    this.input.y = 0;
   }
+};
+
+g.Game.prototype.loadAssets = function (spriteSheets, callback) {
+  var textureLoader = new PIXI.AssetLoader(spriteSheets);
+
+  textureLoader.onComplete = callback;
+
+  textureLoader.load();
 };
 
 g.Game.prototype.frame = function () {
   var time = new Date().getTime();
   var dt = time - (g.time || time);
 
-  g.time = time;
-  g.gameTime += dt;
+  this.time = time;
+  this.gameTime += dt;
 
-  g.fpsMeter.tick();
+  this.fpsMeter.tick();
 
-  g.updateInput();
+  this.updateInput();
 
-  g.collisions = g.getCollisions(g.objects);
-  g.updateGameObjectPositions();
+  this.collisions = this.getCollisions(this.objects);
+  this.updateGameObjectPositions();
 };
 
 g.Game.prototype.scaleToRatio = function (object, ratio) {

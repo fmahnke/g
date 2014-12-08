@@ -1,5 +1,5 @@
-g.GameObject = function(texture) {
-  PIXI.Sprite.call(this, texture);
+g.GameObject = function(textures) {
+  PIXI.MovieClip.call(this, textures);
 
   this._tag = '';
   this._velocityX = 0;
@@ -10,8 +10,19 @@ g.GameObject = function(texture) {
   this.useGravity = true;
 };
 
-g.GameObject.prototype = Object.create(PIXI.Sprite.prototype);
+g.GameObject.prototype = Object.create(PIXI.MovieClip.prototype);
 g.GameObject.prototype.constructor = g.GameObject;
+
+g.GameObject.fromFrames = function(frames)
+{
+    var textures = [];
+ 
+    for (var i = 0; i < frames.length; i++) {
+      textures.push(new PIXI.Texture.fromFrame(frames[i]));
+    }
+ 
+    return new g.GameObject(textures);
+};
 
 Object.defineProperty(g.GameObject.prototype, 'tag', {
   get: function () {
