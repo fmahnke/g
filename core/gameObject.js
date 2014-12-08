@@ -88,10 +88,8 @@ g.GameObject.prototype.updateTransform = function()
       this._animationFrame = nextAnimationFrame;
     }
 
-    console.log('rame', this._animationFrame);
     this.currentFrame = this.frameNameToIndex[this._animation.frames[this._animationFrame]];
  
-    console.log(this.currentFrame);
     this.setTexture(this.textures[this.currentFrame]);
 };
 
