@@ -18,15 +18,12 @@ g.GameObject.prototype.constructor = g.GameObject;
 g.GameObject.fromFrames = function(frames, animations)
 {
     var textures = [];
-    var frameNameToIndex = {};
  
     for (var i = 0; i < frames.length; i++) {
       textures.push(new PIXI.Texture.fromFrame(frames[i]));
-      frameNameToIndex[frames[i]] = i;
     }
  
     var gameObject = new g.GameObject(textures);
-    gameObject.frameNameToIndex = frameNameToIndex;
     gameObject._animations = animations;
 
     return gameObject;
@@ -88,7 +85,7 @@ g.GameObject.prototype.updateTransform = function()
       this._animationFrame = nextAnimationFrame;
     }
 
-    this.currentFrame = this.frameNameToIndex[this._animation.frames[this._animationFrame]];
+    this.currentFrame = this._animation.frames.indexOf(this._animation.frames[this._animationFrame]);
  
     this.setTexture(this.textures[this.currentFrame]);
 };
