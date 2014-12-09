@@ -1,5 +1,7 @@
-g.GameObject = function(textures) {
+g.GameObject = function(game, textures) {
   PIXI.MovieClip.call(this, textures);
+
+  this._game = game;
 
   this._tag = '';
   this._velocityX = 0;
@@ -15,23 +17,9 @@ g.GameObject = function(textures) {
 g.GameObject.prototype = Object.create(PIXI.MovieClip.prototype);
 g.GameObject.prototype.constructor = g.GameObject;
 
-g.GameObject.fromFrames = function(frames, animations)
-{
-    var textures = [];
- 
-    for (var i = 0; i < frames.length; i++) {
-      textures.push(new PIXI.Texture.fromFrame(frames[i]));
-    }
- 
-    var gameObject = new g.GameObject(textures);
-    gameObject._animations = animations;
-
-    return gameObject;
-};
-
 Object.defineProperty(g.GameObject.prototype, 'animation', {
   set: function (value) {
-    this._animation = this._animations[value];
+    this._animation = this.animations[value];
   }
 });
 
@@ -70,6 +58,10 @@ g.GameObject.prototype.remove = function () {
   g.objects = g.objects.filter(function (gameObject) {
     return (gameObject !== self);
   });
+};
+
+g.GameObject.prototype.update = function () {
+  // Default to doing nothing.
 };
 
 g.GameObject.prototype.updateTransform = function()

@@ -10,7 +10,8 @@ g.Game = function () {
   this.display = {};
 
   this.time = 0; // time since epoch
-  this.gameTime = 0; // time since game began
+  this._gameTime = 0; // time since game began
+  this._dt = 0; // time since last frame
 
   this.config = {
     showFPS: false
@@ -21,6 +22,18 @@ g.Game = function () {
 };
 
 g.Game.prototype.constructor = g.Game;
+
+Object.defineProperty(g.Game.prototype, 'gameTime', {
+  get: function () {
+    return this._gameTime;
+  }
+});
+
+Object.defineProperty(g.Game.prototype, 'dt', {
+  get: function () {
+    return this._dt;
+  }
+});
 
 g.Game.prototype.updateGameObjectPositions = function () {
   this.objects.forEach(function (object) {
@@ -57,17 +70,21 @@ g.Game.prototype.loadAssets = function (spriteSheets, callback) {
 
 g.Game.prototype.frame = function () {
   var time = new Date().getTime();
-  var dt = time - (g.time || time);
+  this._dt = time - (this.time || time);
 
   this.time = time;
-  this.gameTime += dt;
+  this._gameTime += this._dt;
 
   this.fpsMeter.tick();
 
   this.updateInput();
 
   this.collisions = this.getCollisions(this.objects);
-  this.updateGameObjectPositions();
+  //this.updateGameObjectPositions();
+  //
+  this.objects.forEach(function (object) {
+    object.update();
+  });
 };
 
 g.Game.prototype.scaleToRatio = function (object, ratio) {
@@ -112,7 +129,7 @@ g.Game.prototype.createTextures = function () {
 };
 
 g.Game.prototype.initialize = function () {
-  this.stage = new PIXI.Stage();
+  this.stage = new PIXI.Stage(this.config.backgroundColor || null);
   this.renderer = PIXI.autoDetectRenderer(this.config.width, this.config.height);
 
   window.addEventListener('resize', this._rescale, false);
@@ -161,4 +178,15 @@ g.Game.prototype.getCollisions = function (objects) {
   });
 
   return collisions;
+};
+
+// Get an array of textures from names.
+g.Game.textures = function (names) {
+  var textures = [];
+    
+  for (var i = 0; i < names.length; i++) {
+    textures.push(PIXI.Texture.fromFrame(names[i]));
+  }
+
+  return textures;
 };
